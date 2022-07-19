@@ -28,6 +28,8 @@ class HomeController extends Controller
     public function index()
     {
         $threads = Thread::withCount('replies')->get();
+//         dd($threads[0]->isDirty());
+//          dd(get_object_vars($threads[0]));
         return view('index', ['threads' => $threads]);
     }
     
