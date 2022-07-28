@@ -34,6 +34,11 @@ class HomeController extends Controller
     }
     
     public function thread_store(Request $request) {
+        $request->validate([
+#            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',
+#            'body' => 'required',
+        ]);
+        
         $thread = new Thread();
         $thread->user_id = Auth::id();
         $thread->title = $request->title;
