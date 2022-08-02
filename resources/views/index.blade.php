@@ -8,24 +8,39 @@
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
                 </div>
-            @endif
+            @endif            
             
+            @guest
+            <div class="alert alert-info">
+                ログインしていないと投稿できません。
+            </div>
+            @endguest
+            
+            @auth
             <div class="card">
                 <div class="card-header">スレッド投稿</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('thread_store') }}">
                         @csrf
-                        
                         <label for="title" class="col-form-label">件名</label>
-                        <input id="title" type="text" class="form-control" name="title" required>
+                        <input id="title" type="text" class="form-control" name="title" value="{{ old('title') }}">
+                        @error('title')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                        
                         <label for="body" class="col-form-label">本文</label>
-                        <textarea id="body" name="body" class="form-control"></textarea>
+                        <textarea id="body" name="body" class="form-control">{{ old('body') }}</textarea>
+                        @error('body')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                         
                         <button type="submit" class="btn btn-primary">投稿</button>
                     </form>
                 </div>
             </div>
             <br>
+            @endauth
+            
             @foreach ($threads as $thread)
             <div class="card">
                 <div class="card-header">

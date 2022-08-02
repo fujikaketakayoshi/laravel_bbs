@@ -10,6 +10,13 @@
                 </div>
             @endif
             
+            @guest
+            <div class="alert alert-info">
+                ログインしていないと投稿できません。
+            </div>
+            @endguest
+
+            @auth            
             <div class="card">
                 <div class="card-header">返信投稿</div>
                 <div class="card-body">
@@ -19,6 +26,9 @@
                         
                         <label for="body" class="col-form-label">本文</label>
                         <textarea id="body" name="body" class="form-control"></textarea>
+                        @error('body')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                         
                         <input type="hidden" name="thread_id" value="{{ $thread->id }}">
                         <button type="submit" class="btn btn-primary">投稿</button>
@@ -26,6 +36,8 @@
                 </div>
             </div>
             <br>
+            @endauth
+            
             <div class="card">
                 <div class="card-header">
                     ID:{{ $thread->id }}<br>

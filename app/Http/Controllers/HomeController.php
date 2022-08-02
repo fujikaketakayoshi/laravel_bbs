@@ -28,16 +28,16 @@ class HomeController extends Controller
     public function index()
     {
         $threads = Thread::withCount('replies')->get();
-//         dd($threads[0]->isDirty());
-//          dd(get_object_vars($threads[0]));
         return view('index', ['threads' => $threads]);
     }
     
     public function thread_store(Request $request) {
         $request->validate([
-#            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',
-#            'body' => 'required',
+            'title' => 'required',
+            'body' => 'required',
         ]);
+#            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',
+
         
         $thread = new Thread();
         $thread->user_id = Auth::id();
@@ -53,6 +53,10 @@ class HomeController extends Controller
     }
     
     public function reply_store(Request $request) {
+        $request->validate([
+            'body' => 'required',
+        ]);
+
         $reply = new Reply();
         $reply->thread_id = $request->thread_id;
         $reply->user_id = Auth::id();

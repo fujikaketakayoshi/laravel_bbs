@@ -13,13 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::post('/thread_store', [App\Http\Controllers\HomeController::class, 'thread_store'])->name('thread_store');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::post('/thread_store', [App\Http\Controllers\HomeController::class, 'thread_store'])->name('thread_store')->middleware('auth');
 Route::get('/thread/{thread}', [App\Http\Controllers\HomeController::class, 'thread'])->name('thread');
-Route::post('/reply_store', [App\Http\Controllers\HomeController::class, 'reply_store'])->name('reply_store');
+Route::post('/reply_store', [App\Http\Controllers\HomeController::class, 'reply_store'])->name('reply_store')->middleware('auth');;
