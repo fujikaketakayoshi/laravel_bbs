@@ -46,12 +46,31 @@
                 <div class="card-header">
                     ID:{{ $thread->id }}<br>
                     投稿者：{{ $thread->user->name }}<br>
+                @if ($thread->delete_flag == 1)
+                    件名：削除
+                @else                    
                     <a href="{{ route('thread', $thread->id) }}">件名：{{ $thread->title }}</a>&nbsp;返信{{ $thread->replies_count }}件
+                @endif
                 </div>
 
                 <div class="card-body">
+                @if ($thread->delete_flag == 1)
+                    管理者により削除されました。
+                @else
                     {!! nl2br(e($thread->body)) !!}
+                @endif
                 </div>
+                @can('admin')
+                    @if ($thread->delete_flag != 1)
+                    <div class="card-body">
+                        <form action="{{ route('admin.thread_delete') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $thread->id }}">
+                            <button type="submit" class="btn btn-danger">削除</button>
+                        </form>
+                    </div>
+                    @endif
+                @endcan
             </div>
             <br>
             @endforeach
