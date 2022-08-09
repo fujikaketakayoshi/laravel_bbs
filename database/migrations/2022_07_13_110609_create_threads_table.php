@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('title');
             $table->string('body');
+            $table->integer('delete_flag')->default(0);
             $table->timestamps();
         });
     }
