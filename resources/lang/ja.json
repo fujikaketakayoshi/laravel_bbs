@@ -79,5 +79,11 @@
     "Save": "保存する",
     "Please confirm access to your account by entering the authentication code provided by your authenticator application.": "認証アプリから提供される認証コードを入力して、アカウントへのアクセスを確認してください。",
     "Photo": "写真はこちら",
-    "API Token Permissions": "API トークンの許可"
+    "API Token Permissions": "API トークンの許可",
+    "Verify Email Address":"メールアドレスの検証する",
+    "Verify Email Address":"メールアドレスの検証する",
+    "The introduction to the notification.":"メールアドレスの検証を行うため下記のボタンをクリックしてください。",
+    "Thank you for using our application!":"もしアカウントを作成していない場合は追加の処理は必要ありません。",
+    "Regards,\nLaravel": "",
+    "Hello!":"こんにちは"
 }
