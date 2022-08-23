@@ -70,4 +70,15 @@ class HomeController extends Controller
         
         return redirect(route('thread', $request->thread_id));
     }
+    
+    public function withdrawal() {
+        return view('withdrawal');
+    }
+    
+    public function withdrawal_done() {
+        $user = Auth::user();
+        $user->delete();
+        return redirect()->route('index');
+    }
+    
 }

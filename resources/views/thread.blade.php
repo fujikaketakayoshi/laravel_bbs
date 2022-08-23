@@ -16,7 +16,8 @@
             </div>
             @endguest
 
-            @auth            
+            @auth
+            @if(Auth::user()->email_verified_at)        
             <div class="card">
                 <div class="card-header">返信投稿</div>
                 <div class="card-body">
@@ -36,12 +37,13 @@
                 </div>
             </div>
             <br>
+            @endif
             @endauth
             
             <div class="card">
                 <div class="card-header">
                     ID:{{ $thread->id }}<br>
-                    投稿者：{{ $thread->user->name }}<br>
+                    投稿者：{{ $thread->user->name ?? '退会' }}<br>
                     <a href="{{ route('thread', $thread->id) }}">件名：{{ $thread->title }}</a>
                 </div>
 
@@ -53,7 +55,7 @@
             @foreach ($thread->replies as $reply)
             <div class="card">
                 <div class="card-header">
-                    投稿者：{{ $reply->user->name }}
+                    投稿者：{{ $reply->user->name ?? '退会' }}
                 </div>
                 <div class="card-body">
                  @if ($reply->delete_flag == 1)
