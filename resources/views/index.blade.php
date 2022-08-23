@@ -17,6 +17,7 @@
             @endguest
             
             @auth
+            @if (Auth::user()->email_verified_at)
             <div class="card">
                 <div class="card-header">スレッド投稿</div>
                 <div class="card-body">
@@ -39,13 +40,14 @@
                 </div>
             </div>
             <br>
+            @endif
             @endauth
             
             @foreach ($threads as $thread)
             <div class="card">
                 <div class="card-header">
                     ID:{{ $thread->id }}<br>
-                    投稿者：{{ $thread->user->name }}<br>
+                    投稿者：{{ $thread->user->name ?? '退会'}}<br>
                 @if ($thread->delete_flag == 1)
                     件名：削除
                 @else                    

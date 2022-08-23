@@ -74,4 +74,11 @@ class HomeController extends Controller
     public function withdrawal() {
         return view('withdrawal');
     }
+    
+    public function withdrawal_done() {
+        $user = Auth::user();
+        $user->delete();
+        return redirect()->route('index');
+    }
+    
 }
