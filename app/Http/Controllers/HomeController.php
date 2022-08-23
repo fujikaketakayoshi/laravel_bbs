@@ -70,4 +70,8 @@ class HomeController extends Controller
         
         return redirect(route('thread', $request->thread_id));
     }
+    
+    public function withdrawal() {
+        return view('withdrawal');
+    }
 }
