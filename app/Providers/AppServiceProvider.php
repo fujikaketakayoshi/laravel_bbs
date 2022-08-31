@@ -29,5 +29,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function($user){
             return ($user->role == 1);
         });
+        Gate::define('verified', function($user){
+            return ($user->email_verified_at);
+        });
     }
 }

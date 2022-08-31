@@ -51,6 +51,7 @@ class JapaneseVerifyEmail extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
         return (new MailMessage)
+                    ->from('fujikake.takayoshi@gmail.com', config('app.name'))
                     ->subject('Laravel BBSのメール認証')
                     ->line('メールアドレスの検証を行うため下記のボタンをクリックしてください。')
                     ->action('メール認証', $verificationUrl)

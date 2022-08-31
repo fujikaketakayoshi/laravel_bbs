@@ -9,7 +9,7 @@
                     {{ session('status') }}
                 </div>
             @endif            
-            
+                        
             @guest
             <div class="alert alert-info">
                 ログインしていないと投稿できません。
@@ -17,7 +17,15 @@
             @endguest
             
             @auth
-            @if (Auth::user()->email_verified_at)
+            @can('verified')
+            @else
+            <div class="alert alert-info">
+                メール認証していないと投稿できません。
+            </div>            
+            @endcan
+            @endauth
+            
+            @can('verified')
             <div class="card">
                 <div class="card-header">スレッド投稿</div>
                 <div class="card-body">
@@ -40,8 +48,8 @@
                 </div>
             </div>
             <br>
-            @endif
-            @endauth
+            @endcan
+            
             
             @foreach ($threads as $thread)
             <div class="card">

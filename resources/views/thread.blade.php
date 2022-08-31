@@ -15,9 +15,17 @@
                 ログインしていないと投稿できません。
             </div>
             @endguest
-
+            
             @auth
-            @if(Auth::user()->email_verified_at)        
+            @can('verified')
+            @else
+            <div class="alert alert-info">
+                メール認証していないと投稿できません。
+            </div>            
+            @endcan
+            @endauth
+
+            @can('verified')
             <div class="card">
                 <div class="card-header">返信投稿</div>
                 <div class="card-body">
@@ -37,8 +45,7 @@
                 </div>
             </div>
             <br>
-            @endif
-            @endauth
+            @endcan
             
             <div class="card">
                 <div class="card-header">
