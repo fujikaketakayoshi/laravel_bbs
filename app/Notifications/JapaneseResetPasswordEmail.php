@@ -51,7 +51,7 @@ class JapaneseResetPasswordEmail extends Notification
         }
 
         return (new MailMessage)
-            ->from('fujikake.takayoshi@gmail.com', config('app.name'))
+            ->from('noreply@laravel-bbs.com', config('app.name'))
             ->subject('Laravel BBSのパスワード再設定')
             ->line('下記のボタンをクリックしてパスワードを再設定してください。')
             ->action('パスワード再設定', url(config('app.url') . route('password.reset', $this->token, false)))
