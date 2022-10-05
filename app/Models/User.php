@@ -50,4 +50,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token){
         $this->notify(new \App\Notifications\JapaneseResetPasswordEmail($token));
     }
+    
+    public function getNameCount() {
+        return strlen($this->name);
+    }
+    
 }
