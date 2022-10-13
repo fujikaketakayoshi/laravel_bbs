@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ThreadRequest;
 use App\Models\Thread;
 use App\Models\Reply;
 use Illuminate\Support\Facades\Auth;
@@ -32,14 +33,12 @@ class HomeController extends Controller
         return view('index', ['threads' => $threads]);
     }
     
-    public function thread_store(Request $request) {
-        $request->validate([
-            'title' => 'required',
-            'body' => 'required',
-        ]);
-#            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',
-
-        
+    public function thread_store(ThreadRequest $request) {
+//         $request->validate([
+//             'title' => 'required',
+//             'body' => 'required',
+//         ]);
+//            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',      
         $thread = new Thread();
         $thread->user_id = Auth::id();
         $thread->title = $request->title;
