@@ -29,6 +29,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 Route::group(['middleware' => ['auth', 'can:admin']], function() {
 	Route::get('/admin/index', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
-	Route::post('/admin/thread_delete', [App\Http\Controllers\AdminController::class, 'thread_delete'])->name('admin.thread_delete');
-	Route::post('/admin/reply_delete', [App\Http\Controllers\AdminController::class, 'reply_delete'])->name('admin.reply_delete');	
+	Route::delete('/admin/thread_delete', [App\Http\Controllers\AdminController::class, 'thread_delete'])->name('admin.thread_delete');
+	Route::delete('/admin/reply_delete', [App\Http\Controllers\AdminController::class, 'reply_delete'])->name('admin.reply_delete');	
 });

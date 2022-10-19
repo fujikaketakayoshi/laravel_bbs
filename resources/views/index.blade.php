@@ -74,6 +74,7 @@
                     @if ($thread->delete_flag != 1)
                     <div class="card-body">
                         <form action="{{ route('admin.thread_delete') }}" method="post">
+                            @method('DELETE')
                             @csrf
                             <input type="hidden" name="id" value="{{ $thread->id }}">
                             <button type="submit" class="btn btn-danger">削除</button>

@@ -15,7 +15,7 @@ class ValidationTest extends TestCase
      *
      * @return void
      */
-    public function test_thread_validate(bool $expect):void
+    public function test_thread_validate()
     {
         $user = User::factory()->create();
         
@@ -25,25 +25,76 @@ class ValidationTest extends TestCase
         ]);
         $this->assertAuthenticated();
 
-        $request  = new ThreadRequest();
-        $rules    = $request->rules();
-        $dataList = [
+        $response = $this->post(route('thread_store'), [
             'title' => '件名です',
             'body' => '本文です',
-        ];
-
-        $validator = Validator::make($dataList, $rules);
-        $result    = $validator->passes();
-
-        $this->assertEquals($expect, $result);
+    	]);
+	    $response->assertSessionHasNoErrors();
     }
     
-    public function dataprovider(): array
+    public function test_thread_validate_title_null()
     {
-        return [
-            'expect'   => ['title', '件名です', true],
-            'required' => ['title', null, false],
-            'required' => ['title', '', false],
-        ];
+        $user = User::factory()->create();
+        
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $this->assertAuthenticated();
+
+        $response = $this->post(route('thread_store'), [
+            'title' => null,
+            'body' => '本文です',
+    	]);
+	    $response->assertSessionHasErrors(['title']);
+    }
+    
+    public function test_thread_validate_body_null()
+    {
+        $user = User::factory()->create();
+        
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $this->assertAuthenticated();
+
+        $response = $this->post(route('thread_store'), [
+            'title' => 'タイトルです',
+            'body' => null,
+    	]);
+	    $response->assertSessionHasErrors(['body']);
+    }
+
+    public function test_reply_validate()
+    {
+        $user = User::factory()->create();
+        
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $this->assertAuthenticated();
+
+        $response = $this->post(route('reply_store'), [
+            'body' => '本文です',
+    	]);
+	    $response->assertSessionHasNoErrors();
+    }
+    
+    public function test_reply_validate_body_null()
+    {
+        $user = User::factory()->create();
+        
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $this->assertAuthenticated();
+
+        $response = $this->post(route('reply_store'), [
+            'body' => null,
+    	]);
+	    $response->assertSessionHasErrors(['body']);
     }
 }
