@@ -31,12 +31,18 @@
                             </div>
                         </div>
 
-                        {!! NoCaptcha::renderJs() !!}
-                        {!! NoCaptcha::display() !!}
-
-                        @error('g-recaptcha-response')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end"></label>
+                            
+                            <div class="col-md-6">
+                                {!! NoCaptcha::renderJs() !!}
+                                {!! NoCaptcha::display() !!}
+                            </div>
+                            
+                            @error('g-recaptcha-response')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
