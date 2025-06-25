@@ -29,7 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $threads = Thread::withCount('replies')->get();
+        $threads = Thread::withCount('replies')->paginate(10);
         return view('index', ['threads' => $threads]);
     }
     

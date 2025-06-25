@@ -85,6 +85,7 @@
             </div>
             <br>
             @endforeach
+            {{ $threads->links() }}
         </div>
     </div>
 </div>
