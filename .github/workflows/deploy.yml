@@ -18,6 +18,6 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             cd /var/www/laravel_bbs
-            git pull origin master
+            git pull origin main
             composer install --no-dev
             php artisan migrate --force
