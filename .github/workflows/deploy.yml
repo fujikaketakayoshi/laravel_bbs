@@ -3,7 +3,7 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - master  # 本番用ブランチ
+      - main  # 本番用ブランチ
 
 jobs:
   deploy:
