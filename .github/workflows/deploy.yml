@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: AlmaLinux9
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.0
