@@ -1,0 +1,16 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+    level: 8
+    bootstrapFiles:
+        - vendor/autoload.php
+    ignoreErrors:
+        # 無視したいエラーがあればここに追加
+        # - '#Some error message regex#'
+
+    # Laravel 専用設定
+    checkModelProperties: true
+    checkMissingIterableValueType: true

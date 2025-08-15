@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+
 class Thread extends Model
 {
     use HasFactory;
@@ -13,6 +15,7 @@ class Thread extends Model
         'user_id',
         'title',
         'body',
+        'delete_flag',
     ];
 	
 	public function user() {

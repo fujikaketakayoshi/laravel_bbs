@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Reply extends Model
 {
     use HasFactory;
@@ -13,6 +14,7 @@ class Reply extends Model
         'thread_id',
         'user_id',
         'body',
+        'delete_flag',
     ];
 
 	public function user() {

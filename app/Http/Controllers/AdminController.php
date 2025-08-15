@@ -7,6 +7,9 @@ use App\Models\Thread;
 use App\Models\Reply;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
 
 class AdminController extends Controller
 {
@@ -15,10 +18,9 @@ class AdminController extends Controller
      *
      * @return void
      */
-     
+    
     public function __construct()
     {
-        //$this->middleware('auth');
     }
 
     /**
@@ -32,18 +34,29 @@ class AdminController extends Controller
         return view('index', ['threads' => $threads]);
     }
     
-    public function thread_delete(Request $request) {
+    public function thread_delete(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+        
+        /** @var \App\Models\Thread $thread */
         $thread = Thread::find($request->id);
         $thread->delete_flag = 1;
         $thread->save();
         return redirect()->route('admin.index');
     }
     
-    public function reply_delete(Request $request) {
+    public function reply_delete(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+        
+        /** @var \App\Models\Reply $reply */
         $reply = Reply::find($request->id);
         $reply->delete_flag = 1;
         $reply->save();
         return redirect()->route('thread', $reply->thread_id);
     }
-
 }

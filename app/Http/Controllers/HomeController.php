@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ThreadRequest;
 use App\Models\Thread;
 use App\Models\Reply;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 
 class HomeController extends Controller
@@ -16,7 +20,7 @@ class HomeController extends Controller
      *
      * @return void
      */
-     
+    
     public function __construct()
     {
         //$this->middleware('auth');
@@ -33,22 +37,24 @@ class HomeController extends Controller
         return view('index', ['threads' => $threads]);
     }
     
-    public function thread_store(ThreadRequest $request) {
+    public function thread_store(ThreadRequest $request): RedirectResponse
+    {
 //         $request->validate([
 //             'title' => 'required',
 //             'body' => 'required',
 //         ]);
 //            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',      
         $thread = new Thread();
-        $thread->user_id = Auth::id();
+        $thread->user_id = (int) Auth::id();
         $thread->title = $request->title;
         $thread->body = $request->body;
         $thread->save();
         
-        return redirect(route('index'));
+        return redirect()->route('index');
     }
     
-    public function thread(Thread $thread) {
+    public function thread(Thread $thread): View
+    {
         if ( $thread->delete_flag == 1) {
             return view('deleted_thread');
         } else {
@@ -56,26 +62,29 @@ class HomeController extends Controller
         }
     }
     
-    public function reply_store(Request $request) {
+    public function reply_store(Request $request): RedirectResponse
+    {
         $request->validate([
             'body' => 'required',
         ]);
 
         $reply = new Reply();
         $reply->thread_id = $request->thread_id;
-        $reply->user_id = Auth::id();
+        $reply->user_id = (int) Auth::id();
         $reply->body = $request->body;
         $reply->save();
         
         return redirect(route('thread', $request->thread_id));
     }
     
-    public function withdrawal() {
+    public function withdrawal(): View
+    {
         return view('withdrawal');
     }
     
-    public function withdrawal_done() {
-        $user = Auth::user();
+    public function withdrawal_done(): RedirectResponse
+    {
+        $user = User::findOrFail(Auth::id());
         $user->delete();
         return redirect()->route('index');
     }
