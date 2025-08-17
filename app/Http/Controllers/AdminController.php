@@ -19,7 +19,7 @@ class AdminController extends Controller
     
     public function index(): View
     {
-        $threads = Thread::withCount('replies')->get();
+        $threads = Thread::withCount('replies')->orderBy('created_at', 'desc')->paginate(10);
         return view('index', ['threads' => $threads]);
     }
     
