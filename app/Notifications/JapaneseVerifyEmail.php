@@ -49,7 +49,7 @@ class JapaneseVerifyEmail extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  (MustVerifyEmail&Model)  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -59,8 +59,11 @@ class JapaneseVerifyEmail extends Notification
         if (static::$toMailCallback) {
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
+
+        /** @var string $app_name */
+        $app_name = config('app.name');
         return (new MailMessage)
-                    ->from('noreply@laravel-bbs.com', config('app.name'))
+                    ->from('noreply@laravel-bbs.com', $app_name)
                     ->subject('Laravel BBSのメール認証')
                     ->line('メールアドレスの検証を行うため下記のボタンをクリックしてください。')
                     ->action('メール認証', $verificationUrl)
@@ -88,9 +91,11 @@ class JapaneseVerifyEmail extends Notification
      */
     protected function verificationUrl($notifiable): string
     {
+        /** @var int $auth_verification_expire */
+        $auth_verification_expire = Config::get('auth.verification.expire', 60);
         return URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+            Carbon::now()->addMinutes($auth_verification_expire),
             [
                 'id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),

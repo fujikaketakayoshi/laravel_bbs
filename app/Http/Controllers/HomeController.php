@@ -27,11 +27,6 @@ class HomeController extends Controller
     
     public function thread_store(ThreadRequest $request): RedirectResponse
     {
-//         $request->validate([
-//             'title' => 'required',
-//             'body' => 'required',
-//         ]);
-//            'title' => 'required|regex:/\A(?!.*?[^\x01-\x7E])(?=.*?[a-z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]+\z/i',      
         $thread = new Thread();
         $thread->user_id = (int) Auth::id();
         $thread->title = $request->title;
@@ -57,9 +52,13 @@ class HomeController extends Controller
         ]);
 
         $reply = new Reply();
-        $reply->thread_id = $request->thread_id;
+        /** @var int $thread_id */
+        $thread_id = $request->thread_id;
+        /** @var string $body */
+        $body = $request->body;
+        $reply->thread_id = $thread_id;
         $reply->user_id = (int) Auth::id();
-        $reply->body = $request->body;
+        $reply->body = $body;
         $reply->save();
         
         return redirect(route('thread', $request->thread_id));

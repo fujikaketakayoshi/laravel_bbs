@@ -58,9 +58,12 @@ class JapaneseResetPasswordEmail extends Notification
         if (static::$toMailCallback) {
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
+        
+        /** @var string $app_name */
+        $app_name = config('app.name');
 
         return (new MailMessage)
-            ->from('noreply@laravel-bbs.com', config('app.name'))
+            ->from('noreply@laravel-bbs.com', $app_name)
             ->subject('Laravel BBSのパスワード再設定')
             ->line('下記のボタンをクリックしてパスワードを再設定してください。')
             ->action('パスワード再設定', url(config('app.url') . route('password.reset', $this->token, false)))
