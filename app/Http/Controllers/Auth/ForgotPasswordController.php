@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
+use Illuminate\Http\RedirectResponse;
+
 class ForgotPasswordController extends Controller
 {
     /*
@@ -24,7 +26,7 @@ class ForgotPasswordController extends Controller
     use SendsPasswordResetEmails;
     
     
-    public function sendResetLinkEmail(Request $request)
+    public function sendResetLinkEmail(Request $request): RedirectResponse
     {
     $request->validate([
         'email' => 'required|email',

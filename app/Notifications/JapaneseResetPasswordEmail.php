@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
+use Closure;
 
 class JapaneseResetPasswordEmail extends Notification
 {
@@ -20,10 +21,18 @@ class JapaneseResetPasswordEmail extends Notification
      *
      * @return void
      */
+
+    /**
+     * @var Closure|null
+     */
     public static $toMailCallback;
+
+    /**
+     * @var string
+     */
     public $token;
 
-    public function __construct($token)
+    public function __construct(string $token)
     {
         $this->token = $token;
     }
@@ -32,9 +41,9 @@ class JapaneseResetPasswordEmail extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -62,7 +71,7 @@ class JapaneseResetPasswordEmail extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
     public function toArray($notifiable)
     {

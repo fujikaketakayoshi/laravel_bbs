@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Model;
+use Closure;
+
 class JapaneseVerifyEmail extends Notification
 {
     use Queueable;
@@ -20,7 +24,12 @@ class JapaneseVerifyEmail extends Notification
      *
      * @return void
      */
+
+    /**
+     * @var Closure|null
+     */
     public static $toMailCallback;
+
     public function __construct()
     {
         //
@@ -30,9 +39,9 @@ class JapaneseVerifyEmail extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -62,16 +71,22 @@ class JapaneseVerifyEmail extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //
         ];
     }
     
-    protected function verificationUrl($notifiable)
+    /**
+     * Get the verification URL for the given notifiable.
+     *
+     * @param  (MustVerifyEmail&Model)  $notifiable
+     * @return string
+     */
+    protected function verificationUrl($notifiable): string
     {
         return URL::temporarySignedRoute(
             'verification.verify',
@@ -82,8 +97,12 @@ class JapaneseVerifyEmail extends Notification
             ]
         );
     }
- 
-    public static function toMailUsing($callback)
+
+    /**
+     * @param  \Closure|null  $callback
+     * @return void
+     */
+    public static function toMailUsing($callback): void
     {
         static::$toMailCallback = $callback;
     }

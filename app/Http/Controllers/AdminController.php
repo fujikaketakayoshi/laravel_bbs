@@ -13,22 +13,11 @@ use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    
     public function __construct()
     {
     }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    
+    public function index(): View
     {
         $threads = Thread::withCount('replies')->get();
         return view('index', ['threads' => $threads]);

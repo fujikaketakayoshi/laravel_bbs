@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Thread extends Model
 {
@@ -18,12 +19,20 @@ class Thread extends Model
         'delete_flag',
     ];
 	
-	public function user() {
-		return $this->belongsTo('App\Models\User');
+    /**
+     * @return BelongsTo<User, Thread>
+     */
+	public function user(): BelongsTo
+    {
+		return $this->belongsTo(User::class);
 	}
 	
-	public function replies() {
-		return $this->hasMany('App\Models\Reply');
+    /**
+     * @return HasMany<Reply>
+     */
+	public function replies(): HasMany
+    {
+		return $this->hasMany(Reply::class);
 	}
 	
 }
