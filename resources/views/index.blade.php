@@ -50,7 +50,7 @@
             <br>
             @endcan
             
-            
+            <p>スレッド</p>
             @foreach ($threads as $thread)
             <div class="card">
                 <div class="card-header">
