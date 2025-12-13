@@ -1,6 +1,7 @@
 name: Deploy to VPS
 
 on:
+  pull_request:
   push:
     branches:
       - main  # 本番用ブランチ
