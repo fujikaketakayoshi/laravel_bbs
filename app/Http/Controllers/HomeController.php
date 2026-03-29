@@ -2,64 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\ThreadRequest;
-use App\Models\Thread;
-use App\Models\Reply;
-use App\Models\User;
+use App\Http\Requests\ReplyRequest;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\Thread;
+
+use App\Services\ThreadService;
+use App\Services\ReplyService;
+use App\Services\UserService;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-
 class HomeController extends Controller
 {
-    public function __construct()
+    private ThreadService $threadService;
+    private ReplyService $replyService;
+    private UserService $userService;
+
+    public function __construct(
+        ThreadService $threadService,
+        ReplyService $replyService,
+        UserService $userService
+    )
     {
+        $this->threadService = $threadService;
+        $this->replyService = $replyService;
+        $this->userService = $userService;
     }
 
     public function index(): View
     {
-        $threads = Thread::withCount('replies')->orderBy('created_at', 'desc')->paginate(10);
+        $threads = $this->threadService->getThreads();
         return view('index', ['threads' => $threads]);
     }
     
     public function thread_store(ThreadRequest $request): RedirectResponse
     {
-        $thread = new Thread();
-        $thread->user_id = (int) Auth::id();
-        $thread->title = $request->title;
-        $thread->body = $request->body;
-        $thread->save();
-        
+        $this->threadService->create(
+            (int) Auth::id(),
+            $request->title,
+            $request->body
+        );
         return redirect()->route('index');
     }
     
     public function thread(Thread $thread): View
     {
-        if ( $thread->delete_flag == 1) {
+        if ($this->threadService->isDeleted($thread)) {
             return view('deleted_thread');
-        } else {
-            return view('thread', ['thread' => $thread]);
         }
+
+        return view('thread', ['thread' => $thread]);
     }
-    
-    public function reply_store(Request $request): RedirectResponse
+
+    public function reply_store(ReplyRequest $request): RedirectResponse
     {
         $request->validate([
             'body' => 'required',
         ]);
-
-        $reply = new Reply();
-        /** @var int $thread_id */
-        $thread_id = $request->thread_id;
-        /** @var string $body */
-        $body = $request->body;
-        $reply->thread_id = $thread_id;
-        $reply->user_id = (int) Auth::id();
-        $reply->body = $body;
-        $reply->save();
+        $this->replyService->create(
+            (int) $request->thread_id,
+            (int) Auth::id(),
+            $request->body,
+        );
         
         return redirect(route('thread', $request->thread_id));
     }
@@ -71,8 +78,7 @@ class HomeController extends Controller
     
     public function withdrawal_done(): RedirectResponse
     {
-        $user = User::findOrFail(Auth::id());
-        $user->delete();
+        $this->userService->deleteUser((int) Auth::id());
         return redirect()->route('index');
     }
     

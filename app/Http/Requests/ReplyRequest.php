@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Thread;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $title
  * @property string $body
  */
-class ThreadRequest extends FormRequest
+class ReplyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,8 +17,11 @@ class ThreadRequest extends FormRequest
      */
     public function authorize()
     {
-        // スレッドの作成はログインユーザーのみ許可だが、web.phpでもミドルウェアで制限しているため、ここでは認証されているかどうかだけを確認する
-        return auth()->check();
+        $thread = Thread::find($this->input('thread_id'));
+        if (!$thread || auth()->check() == false) {
+            return false;
+        }
+        return $thread->delete_flag == 0;
     }
 
     /**
@@ -29,7 +32,7 @@ class ThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:255',
+            'thread_id' => 'required|integer|exists:threads,id',
             'body' => 'required|string',
         ];
     }
