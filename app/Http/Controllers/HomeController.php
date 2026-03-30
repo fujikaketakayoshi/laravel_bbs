@@ -15,6 +15,8 @@ use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
+use App\Exceptions\BusinessRuleException;
+
 class HomeController extends Controller
 {
     private ThreadService $threadService;
@@ -40,12 +42,22 @@ class HomeController extends Controller
     
     public function thread_store(ThreadRequest $request): RedirectResponse
     {
-        $this->threadService->create(
-            (int) Auth::id(),
-            $request->title,
-            $request->body
-        );
-        return redirect()->route('index');
+        try {
+            $this->threadService->create(
+                (int) Auth::id(),
+                $request->title,
+                $request->body
+            );
+
+            return redirect()->route('index');
+
+        } catch (BusinessRuleException $e) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'business' => $e->getMessage(),
+                ]);
+        }
     }
     
     public function thread(Thread $thread): View
@@ -62,13 +74,21 @@ class HomeController extends Controller
         $request->validate([
             'body' => 'required',
         ]);
-        $this->replyService->create(
-            (int) $request->thread_id,
-            (int) Auth::id(),
-            $request->body,
-        );
-        
-        return redirect(route('thread', $request->thread_id));
+        try {
+            $this->replyService->create(
+                (int) $request->thread_id,
+                (int) Auth::id(),
+                $request->body,
+            );
+            
+            return redirect(route('thread', $request->thread_id));
+        } catch (BusinessRuleException $e) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'business' => $e->getMessage(),
+                ]);
+        }
     }
     
     public function withdrawal(): View

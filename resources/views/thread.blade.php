@@ -29,6 +29,9 @@
             <div class="card">
                 <div class="card-header">返信投稿</div>
                 <div class="card-body">
+                    @error('business')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                     <form method="POST" action="{{ route('reply_store') }}">
                         @csrf
                         

@@ -29,6 +29,9 @@
             <div class="card">
                 <div class="card-header">スレッド投稿</div>
                 <div class="card-body">
+                    @error('business')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                     <form method="POST" action="{{ route('thread_store') }}">
                         @csrf
                         <label for="title" class="col-form-label">件名</label>

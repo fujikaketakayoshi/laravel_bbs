@@ -17,11 +17,7 @@ class ReplyRequest extends FormRequest
      */
     public function authorize()
     {
-        $thread = Thread::find($this->input('thread_id'));
-        if (!$thread || auth()->check() == false) {
-            return false;
-        }
-        return $thread->delete_flag == 0;
+        return auth()->check();
     }
 
     /**
