@@ -29,7 +29,7 @@ class ReplyService
             ->whereDate('created_at', today())
             ->count();
 
-        if ($todayCount >= 3) {
+        if ($todayCount >= 30) {
             throw new BusinessRuleException('本日の返信上限に達しています');
         }
         
