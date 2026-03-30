@@ -39,4 +39,13 @@ class ReplyService
             'body' => $body,
         ]);
     }
+
+    public function softDelete(int $id): Reply
+    {
+        $reply = Reply::findOrFail($id);
+        $reply->delete_flag = 1;
+        $reply->save();
+
+        return $reply;
+    }
 }

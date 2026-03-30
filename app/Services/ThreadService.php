@@ -45,4 +45,11 @@ class ThreadService
     {
         return $thread->delete_flag == 1;
     }
+
+    public function softDelete(int $id): void
+    {
+        $thread = Thread::findOrFail($id);
+        $thread->delete_flag = 1;
+        $thread->save();
+    }
 }
