@@ -54,6 +54,16 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new \App\Notifications\JapaneseResetPasswordEmail($token));
     }
     
+    public function is_admin(): bool
+    {
+        return $this->role === 1;
+    }
+    
+    public function is_verified(): bool
+    {
+        return $this->email_verified_at !== null;
+    }
+
 	public function getNameCount(): int
     {
         return strlen($this->name);

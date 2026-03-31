@@ -9,13 +9,11 @@ class ReplyDeleteRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Gate::allows('admin');
+        return $this->user()->can('delete', $this->route('reply'));
     }
 
     public function rules(): array
     {
-        return [
-            'id' => 'required|integer|exists:replies,id',
-        ];
+        return [];
     }
 }

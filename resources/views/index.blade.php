@@ -73,13 +73,12 @@
                     {!! nl2br(e($thread->body)) !!}
                 @endif
                 </div>
-                @can('admin')
+                @can('delete', $thread)
                     @if ($thread->delete_flag != 1)
                     <div class="card-body">
-                        <form action="{{ route('admin.thread_delete') }}" method="post">
+                        <form action="{{ route('admin.thread_delete', $thread->id) }}" method="post">
                             @method('DELETE')
                             @csrf
-                            <input type="hidden" name="id" value="{{ $thread->id }}">
                             <button type="submit" class="btn btn-danger">削除</button>
                         </form>
                     </div>

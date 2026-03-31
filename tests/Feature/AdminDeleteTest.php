@@ -5,7 +5,6 @@ use App\Models\User;
 use App\Models\Thread;
 use App\Models\Reply;
 
-
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,9 +17,7 @@ class AdminDeleteTest extends TestCase
         $admin = User::factory()->create(['role' => 1]);
         $thread = Thread::factory()->create(['delete_flag' => 0]);
 
-        $response = $this->actingAs($admin)->delete(route('admin.thread_delete'), [
-            'id' => $thread->id,
-        ]);
+        $response = $this->actingAs($admin)->delete(route('admin.thread_delete', $thread->id));
 
         $response->assertRedirect(route('index'));
 
@@ -35,9 +32,7 @@ class AdminDeleteTest extends TestCase
         $user = User::factory()->create(['role' => 0]);
         $thread = Thread::factory()->create();
 
-        $response = $this->actingAs($user)->delete(route('admin.thread_delete'), [
-            'id' => $thread->id,
-        ]);
+        $response = $this->actingAs($user)->delete(route('admin.thread_delete', $thread->id));
 
         $response->assertForbidden();
     }
@@ -46,9 +41,7 @@ class AdminDeleteTest extends TestCase
     {
         $thread = Thread::factory()->create();
 
-        $response = $this->delete(route('admin.thread_delete'), [
-            'id' => $thread->id,
-        ]);
+        $response = $this->delete(route('admin.thread_delete', $thread->id));
 
         $response->assertRedirect(route('login'));
     }
@@ -63,9 +56,7 @@ class AdminDeleteTest extends TestCase
             'delete_flag' => 0,
         ]);
 
-        $response = $this->actingAs($admin)->delete(route('admin.reply_delete'), [
-            'id' => $reply->id,
-        ]);
+        $response = $this->actingAs($admin)->delete(route('admin.reply_delete', $reply->id));
 
         $response->assertRedirect(route('thread', $reply->thread_id));
 
@@ -84,9 +75,7 @@ class AdminDeleteTest extends TestCase
             'delete_flag' => 0,
         ]);
 
-        $response = $this->actingAs($user)->delete(route('admin.reply_delete'), [
-            'id' => $reply->id,
-        ]);
+        $response = $this->actingAs($user)->delete(route('admin.reply_delete', $reply->id));
 
         $response->assertForbidden();
     }
@@ -99,9 +88,7 @@ class AdminDeleteTest extends TestCase
             'delete_flag' => 0,
         ]);
 
-        $response = $this->delete(route('admin.reply_delete'), [
-            'id' => $reply->id,
-        ]);
+        $response = $this->delete(route('admin.reply_delete', $reply->id));
 
         $response->assertRedirect(route('login'));
     }

@@ -9,13 +9,11 @@ class ThreadDeleteRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Gate::allows('admin');
+        return $this->user()->can('delete', $this->route('thread'));
     }
 
     public function rules(): array
     {
-        return [
-            'id' => 'required|integer|exists:threads,id',
-        ];
+        return [];
     }
 }

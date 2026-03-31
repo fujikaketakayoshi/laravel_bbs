@@ -98,7 +98,10 @@ class HomeController extends Controller
     
     public function withdrawal_done(): RedirectResponse
     {
-        $this->userService->deleteUser((int) Auth::id());
+        $user = Auth::user();
+        $this->authorize('delete', $user);
+
+        $this->userService->deleteUser($user->id);
         return redirect()->route('index');
     }
     

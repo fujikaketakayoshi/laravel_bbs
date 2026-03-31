@@ -68,19 +68,18 @@
                     投稿者：{{ $reply->user->name ?? '退会' }}
                 </div>
                 <div class="card-body">
-                 @if ($reply->delete_flag == 1)
+                @if ($reply->delete_flag == 1)
                     管理者により削除されました。
                 @else
                     {!! nl2br(e($reply->body)) !!}
                 @endif
                 </div>
-                @can('admin')
+                @can('delete', $reply)
                     @if ($reply->delete_flag != 1)
                     <div class="card-body">
-                        <form action="{{ route('admin.reply_delete') }}" method="post">
+                        <form action="{{ route('admin.reply_delete', $reply->id) }}" method="post">
                             @method('DELETE')
                             @csrf
-                            <input type="hidden" name="id" value="{{ $reply->id }}">
                             <button type="submit" class="btn btn-danger">削除</button>
                         </form>
                     </div>

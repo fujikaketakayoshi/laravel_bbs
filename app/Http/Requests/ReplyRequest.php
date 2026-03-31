@@ -16,7 +16,7 @@ class ReplyRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return $this->user()->can('create', \App\Models\Reply::class);
     }
 
     /**

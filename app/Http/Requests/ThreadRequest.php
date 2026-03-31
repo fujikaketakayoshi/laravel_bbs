@@ -17,8 +17,8 @@ class ThreadRequest extends FormRequest
      */
     public function authorize()
     {
-        // スレッドの作成はログインユーザーのみ許可だが、web.phpでもミドルウェアで制限しているため、ここでは認証されているかどうかだけを確認する
-        return auth()->check();
+        // スレッドの作成はverifiedユーザーのみ許可
+        return $this->user()->can('create', \App\Models\Thread::class);
     }
 
     /**
