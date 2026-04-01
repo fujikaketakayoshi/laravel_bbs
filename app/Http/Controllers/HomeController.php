@@ -62,7 +62,7 @@ class HomeController extends Controller
     
     public function thread(Thread $thread): View
     {
-        if ($this->threadService->isDeleted($thread)) {
+        if ($thread->delete_flag == 1) {
             return view('deleted_thread');
         }
 
